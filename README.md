@@ -20,6 +20,9 @@ PrepVerse AI brings resume analysis, ATS optimization, personalized preparation 
 7. **Placement Cell Batch Analytics**: Aggregate institution readiness metrics, batch distribution, top technical skill gaps, and role splits.
 
 ---
+**Before commit make sure update changes in both files**-----
+---**progress.md** -----
+---**Rollback.md** ------
 
 ## 🚀 Quick Setup & Local Execution
 
