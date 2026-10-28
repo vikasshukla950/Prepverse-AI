@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import { FileText, Upload, Sparkles, CheckCircle2, Award, ArrowUpRight } from "lucide-react";
-import { fetchApi } from "@/lib/api";
+import { fetchApi, API_BASE } from "@/lib/api";
 
 export default function ResumePage() {
   const [versions, setVersions] = useState<any[]>([]);
@@ -67,7 +67,7 @@ export default function ResumePage() {
 
     try {
       const token = localStorage.getItem("prepverse_token");
-      const res = await fetch("http://127.0.0.1:8000/api/resume-ats/upload", {
+      const res = await fetch(`${API_BASE}/resume-ats/upload`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

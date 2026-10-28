@@ -91,15 +91,46 @@ class InterviewSetupRequest(BaseModel):
     company: str
     role: str
     difficulty: str
-    interview_type: str # Technical, HR, Behavioral, System Design
+    interview_type: str # Technical, HR, Behavioral, System Design, etc.
+    topic_focus: Optional[str] = "Comprehensive Technical"
     duration_minutes: Optional[int] = 30
+    language: Optional[str] = "English (US)"
+    include_coding_ide: Optional[bool] = False
+    use_resume_context: Optional[bool] = True
+    custom_job_description: Optional[str] = None
 
 class InterviewAnswerRequest(BaseModel):
     interview_id: int
     question_text: str
     answer_text: str
+    audio_duration_seconds: Optional[float] = 30.0
+    editor_code: Optional[str] = None
+    language: Optional[str] = "python"
     audio_metrics: Optional[dict] = None # filler_words, wpm, pauses
     visual_metrics: Optional[dict] = None # eye_contact, posture
+
+class InterviewCodeReviewRequest(BaseModel):
+    interview_id: int
+    code: str
+    language: str = "python"
+    current_question: Optional[str] = ""
+
+class InterviewHintRequest(BaseModel):
+    interview_id: int
+    current_question: str
+    current_code: Optional[str] = ""
+    hint_level: Optional[int] = 1
+
+class InterviewScheduleRequest(BaseModel):
+    company: str
+    role: str
+    interview_type: str
+    difficulty: str
+    scheduled_date: str
+    scheduled_time: str
+    duration_minutes: Optional[int] = 30
+    topic_focus: Optional[str] = "Comprehensive Technical"
+    language: Optional[str] = "English (US)"
 
 # Mentor Booking
 class MentorBookingRequest(BaseModel):

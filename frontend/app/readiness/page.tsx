@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import ReadinessGauge from "@/components/ReadinessGauge";
 import { Award, Download, ArrowUpRight, CheckCircle2, AlertTriangle, Sparkles } from "lucide-react";
-import { fetchApi } from "@/lib/api";
+import { fetchApi, API_BASE } from "@/lib/api";
 
 export default function ReadinessReportPage() {
   const [data, setData] = useState<any>(null);
@@ -48,7 +48,7 @@ export default function ReadinessReportPage() {
   const handleDownloadPDF = async () => {
     try {
       const token = localStorage.getItem("prepverse_token");
-      const response = await fetch("http://127.0.0.1:8000/api/readiness/pdf-report", {
+      const response = await fetch(`${API_BASE}/readiness/pdf-report`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const blob = await response.blob();
