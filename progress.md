@@ -101,4 +101,5 @@ When making changes, append a new entry under `📋 Changelog & Progress History
 - **Changes Recorded**:
   1. Description of change 1.
   2. Description of change 2.
+  3. Description of change  3. 
 ```
