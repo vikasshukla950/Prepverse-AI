@@ -17,6 +17,33 @@
 
 ## 📋 Changelog & Progress History
 
+### [2026-10-28] - Role-Based Authentication & Registration Portals
+- **Status**: Completed & Verified
+- **Module**: `Frontend / Auth & Navigation`, `Backend / Auth & Schemas`
+- **Files Modified**:
+  - `frontend/components/Navbar.tsx`
+  - `frontend/app/login/page.tsx`
+  - `backend/app/schemas.py`
+  - `backend/app/routers/auth.py`
+- **Changes Recorded**:
+  1. **Navbar Role Context Dropdown Redesign**:
+     - Replaced hardcoded instant demo bypass with dedicated authentication actions for each role context.
+     - Added rich role cards for **Student**, **Industry Mentor**, **Placement Cell Officer**, and **System Administrator**.
+     - Provided direct one-click **Sign In** and **Register** actions navigating to `/login?role=[role]&tab=[login|register]`.
+  2. **Dedicated Role Login & Signup Portals (`/login`)**:
+     - Built top role selector bar (🎓 Student, 💼 Mentor, 🏛️ Placement Cell, 🛡️ Admin) dynamically adapting themes, badges, and copy.
+     - Dual-tab interface supporting both **Sign In** and **Sign Up / Register** for any selected role.
+     - Role-specific 1-click **Pre-fill Demo Credentials** button for instant local verification.
+     - Tailored registration forms with role-specific profile fields:
+       - *Student*: College/University, Target Engineering Role, Graduation Year.
+       - *Mentor*: Current Company, Job Title, Years of Experience, Hourly Mock Fee, Primary Domain Expertise.
+       - *Placement Cell*: Institution Name, Official Designation, Expected Batch Size.
+       - *Administrator*: Department/Scope, Admin Authorization Code.
+  3. **Backend Registration & Role Provisioning**:
+     - Extended `UserRegister` Pydantic schema in `backend/app/schemas.py` with custom role metadata fields.
+     - Enhanced `/api/auth/register` in `backend/app/routers/auth.py` to auto-provision `Profile` or `Mentor` records upon signup.
+     - Tested and verified login & registration lifecycles for all 4 user roles.
+
 ### [2026-10-28] - AI Interview Arena: One-to-One Voice Model, Speech Detection & Progressive Rounds
 - **Status**: Completed & Verified
 - **Module**: `Frontend / Arena`, `Backend / Interview Router & Services`

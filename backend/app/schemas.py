@@ -8,6 +8,18 @@ class UserRegister(BaseModel):
     password: str
     full_name: str
     role: Optional[str] = "student"
+    college: Optional[str] = None
+    target_role: Optional[str] = None
+    grad_year: Optional[int] = None
+    company: Optional[str] = None
+    title: Optional[str] = None
+    experience_years: Optional[int] = None
+    skills: Optional[str] = None
+    hourly_rate: Optional[float] = None
+    institution: Optional[str] = None
+    designation: Optional[str] = None
+    batch_size: Optional[str] = None
+    admin_code: Optional[str] = None
 
 class UserLogin(BaseModel):
     email: EmailStr
