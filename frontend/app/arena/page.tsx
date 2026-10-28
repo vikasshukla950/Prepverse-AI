@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
-import { Video, Sparkles, Shield, Play, Clock, ArrowRight, Building2, BookOpen, Mic, Cpu, Award } from "lucide-react";
+import { Video, Sparkles, Play, Clock, Building2, BookOpen, Mic, Cpu, Volume2, Radio, CheckCircle2 } from "lucide-react";
 import { fetchApi } from "@/lib/api";
 
 export default function InterviewArenaSetupPage() {
@@ -13,6 +13,7 @@ export default function InterviewArenaSetupPage() {
   const [interviewType, setInterviewType] = useState("Technical");
   const [difficulty, setDifficulty] = useState("Medium");
   const [duration, setDuration] = useState(30);
+  const [voiceModelEnabled, setVoiceModelEnabled] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const companiesList = [
@@ -36,6 +37,8 @@ export default function InterviewArenaSetupPage() {
 
   const handleStart = async () => {
     setLoading(true);
+    const openingQuestion = `Hello and welcome! I am your AI Interviewer today for the ${role} role at ${company}. To get started, please tell me something about yourself, your technical background, and a key software project you are proud of.`;
+
     try {
       const res = await fetchApi("/interview/setup", {
         method: "POST",
@@ -51,7 +54,12 @@ export default function InterviewArenaSetupPage() {
         ...res,
         company,
         role,
-        topicFocus
+        topicFocus,
+        voiceModelEnabled,
+        first_question: res.first_question || openingQuestion,
+        current_round: 1,
+        total_rounds: 5,
+        round_title: "Candidate Introduction & Background"
       }));
       window.location.href = "/arena/room";
     } catch (err) {
@@ -61,7 +69,11 @@ export default function InterviewArenaSetupPage() {
         role,
         topicFocus,
         difficulty,
-        first_question: `Welcome to your ${company} ${role} (${topicFocus}) simulated interview. I am your AI Interviewer. To begin, please introduce yourself and walk me through the architecture and key technical challenges of a complex project you developed.`
+        voiceModelEnabled,
+        current_round: 1,
+        total_rounds: 5,
+        round_title: "Candidate Introduction & Background",
+        first_question: openingQuestion
       }));
       window.location.href = "/arena/room";
     } finally {
@@ -70,7 +82,7 @@ export default function InterviewArenaSetupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
       <Navbar />
 
       <div className="flex-1 flex max-w-7xl mx-auto w-full">
@@ -82,9 +94,11 @@ export default function InterviewArenaSetupPage() {
             <span className="text-[10px] font-bold uppercase tracking-wider text-purple-400">Multimodal Simulation Suite</span>
             <h1 className="text-2xl font-black text-white flex items-center">
               <Video className="h-6 w-6 text-purple-400 mr-2" />
-              AI Mock Interview Arena - Topic & Company Setup
+              AI Mock Interview Arena - One-to-One Talking Setup
             </h1>
-            <p className="text-xs text-slate-400 mt-1">Configure company-specific rounds and topic focus. Evaluates verbal technical reasoning, speech WPM, filler word cadence, and camera posture.</p>
+            <p className="text-xs text-slate-400 mt-1">
+              Live two-way conversational interview powered by real-time speech detection, an AI voice model, adaptive follow-up questions, speech pacing (WPM), and filler word analysis.
+            </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -178,14 +192,52 @@ export default function InterviewArenaSetupPage() {
                 </div>
               </div>
 
+              {/* Voice Model & Speech Settings Banner */}
+              <div className="rounded-2xl bg-indigo-950/30 border border-indigo-800/40 p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2.5">
+                    <div className="h-8 w-8 rounded-xl bg-indigo-600/30 text-indigo-400 flex items-center justify-center">
+                      <Volume2 className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold text-white">AI Spoken Voice & Speech Recognition</div>
+                      <div className="text-[10px] text-slate-400">Two-way natural conversation (AI speaks questions, user talks back)</div>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setVoiceModelEnabled(!voiceModelEnabled)}
+                    className={`px-3 py-1 rounded-xl text-xs font-bold border transition-all ${
+                      voiceModelEnabled
+                        ? "bg-indigo-600 border-indigo-500 text-white shadow-md shadow-indigo-600/30"
+                        : "bg-slate-900 border-slate-800 text-slate-400"
+                    }`}
+                  >
+                    {voiceModelEnabled ? "Enabled" : "Muted"}
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-300 pt-1 border-t border-indigo-900/40">
+                  <div className="flex items-center space-x-1.5">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 flex-shrink-0" />
+                    <span>Opening: &quot;Tell me about yourself&quot;</span>
+                  </div>
+                  <div className="flex items-center space-x-1.5">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 flex-shrink-0" />
+                    <span>Real-time WPM & filler word analysis</span>
+                  </div>
+                </div>
+              </div>
+
               {/* Launch CTA */}
               <button
                 onClick={handleStart}
                 disabled={loading}
-                className="w-full rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 py-3.5 text-xs font-bold text-white shadow-xl shadow-purple-600/30 hover:brightness-110 transition-all flex items-center justify-center space-x-2"
+                className="w-full rounded-2xl bg-gradient-to-r from-purple-600 via-indigo-600 to-indigo-700 py-3.5 text-xs font-black uppercase tracking-wider text-white shadow-xl shadow-indigo-600/30 hover:brightness-110 transition-all flex items-center justify-center space-x-2"
               >
                 <Play className="h-4 w-4 fill-current" />
-                <span>{loading ? "Initializing Multimodal Arena..." : `Enter ${company} Mock Arena`}</span>
+                <span>{loading ? "Preparing Voice Model..." : `Enter ${company} Live Voice Arena →`}</span>
               </button>
 
             </div>
@@ -201,28 +253,28 @@ export default function InterviewArenaSetupPage() {
                 <div className="space-y-3 text-xs">
                   <div className="rounded-xl bg-slate-950 p-3.5 border border-slate-800 space-y-1">
                     <div className="font-bold text-indigo-400 flex items-center">
-                      <Cpu className="h-3.5 w-3.5 mr-1.5" /> Technical Accuracy & Trade-offs
+                      <Radio className="h-3.5 w-3.5 mr-1.5" /> 5-Round Progressive Interview
                     </div>
                     <div className="text-slate-400 text-[11px]">
-                      Follow-up questions are dynamically generated based on your answers (e.g. edge cases, scaling bottlenecks).
+                      Begins with background and project introduction, moving adaptively into system architecture, concurrency, behavioral leadership (STAR), and retrospectives.
                     </div>
                   </div>
 
                   <div className="rounded-xl bg-slate-950 p-3.5 border border-slate-800 space-y-1">
                     <div className="font-bold text-emerald-400 flex items-center">
-                      <Mic className="h-3.5 w-3.5 mr-1.5" /> Speech Cadence & Pacing
+                      <Mic className="h-3.5 w-3.5 mr-1.5" /> Speech Cadence & Filler Words
                     </div>
                     <div className="text-slate-400 text-[11px]">
-                      Words per minute (WPM target: 120-150 WPM) and filler words (um, like, actually) detection.
+                      Live WPM tracker (target: 120-150 WPM) and real-time detection of filler hesitations like &quot;um&quot;, &quot;like&quot;, &quot;basically&quot;.
                     </div>
                   </div>
 
                   <div className="rounded-xl bg-slate-950 p-3.5 border border-slate-800 space-y-1">
                     <div className="font-bold text-purple-400 flex items-center">
-                      <Video className="h-3.5 w-3.5 mr-1.5" /> Eye Contact & Camera Presence
+                      <Volume2 className="h-3.5 w-3.5 mr-1.5" /> Natural Spoken AI Interviewer
                     </div>
                     <div className="text-slate-400 text-[11px]">
-                      Real-time webcam alignment to foster professional interview posture and eye contact.
+                      The AI speaks each question aloud with visual soundwaves and listens for your natural spoken answer.
                     </div>
                   </div>
                 </div>

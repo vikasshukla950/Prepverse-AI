@@ -17,6 +17,34 @@
 
 ## 📋 Changelog & Progress History
 
+### [2026-10-28] - AI Interview Arena: One-to-One Voice Model, Speech Detection & Progressive Rounds
+- **Status**: Completed & Verified
+- **Module**: `Frontend / Arena`, `Backend / Interview Router & Services`
+- **Files Modified**:
+  - `backend/app/routers/interview.py`
+  - `frontend/app/arena/page.tsx`
+  - `frontend/app/arena/room/page.tsx`
+  - `frontend/app/arena/report/[id]/page.tsx`
+- **Changes Recorded**:
+  1. **One-to-One Spoken Interview Engine**:
+     - Built Web Speech API speech-to-text recognition with continuous microphone capture and live transcript synchronization.
+     - Implemented Web Audio API (`AudioContext` + `AnalyserNode`) real-time microphone volume visualizer bars that bounce with the candidate's actual voice.
+     - Added natural Text-to-Speech (TTS) AI voice model (`window.speechSynthesis`) with conversational pacing (~0.98x rate, 1.0 pitch), glowing animated voice avatar, and equalizer soundwave animations.
+     - Added speech controls: AI Voice Mute/Unmute, Replay Question, Stop Speaking/Interrupt, and Speak via Microphone.
+  2. **Multi-Question Progressive Flow ("Tell Me About Yourself" -> Wrap-Up)**:
+     - **Round 1**: Starts with warm-up: *"Hello and welcome! I am your AI Interviewer today... To get started, please tell me something about yourself, your technical background, and a key software project you are proud of."*
+     - **Round 2**: Technical Architecture & Deep Dive (decoupling, data flow, API design based on candidate's introduced stack).
+     - **Round 3**: Scalability, Concurrency & Edge Cases (handling 10x traffic spikes, cache stampedes, replica lag).
+     - **Round 4**: Behavioral Leadership (STAR method: technical disagreement, deadline conflict, engineering ownership).
+     - **Round 5**: System Retrospective & Candidate Questions (redesign reflections and questions for the company).
+  3. **Live Speech & Fluency Analytics**:
+     - Real-time Words Per Minute (WPM) calculation.
+     - Live filler-word detection badges detecting `"um"`, `"uh"`, `"like"`, `"basically"`, `"actually"`, `"you know"`.
+     - Speaking duration timer and turn count indicators.
+  4. **Dynamic Comprehensive Reporting**:
+     - Connected `end_interview` to `ai_service.generate_comprehensive_interview_report` to generate dynamic 360° scores and save speech metrics per turn.
+     - Enhanced `report/[id]/page.tsx` with speech fluency score breakdown, WPM badges, and filler-word counts.
+
 ### [2026-10-28] - Tracking Rules, Security Hardening & Localhost Verification
 - **Status**: Completed
 - **Module**: Project Management, Repository Standards, Security & Localhost
